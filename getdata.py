@@ -12,3 +12,4 @@ def pull_data_realtime(stock_symbol):
     return data, info
 
 print(pull_data_realtime("AAPL"))
+23
