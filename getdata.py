@@ -11,4 +11,14 @@ def pull_data_realtime(stock_symbol):
     
     return data, info
 
-print(pull_data_realtime("AAPL"))
+infoApple = pull_data_realtime("AAPL")
+
+def print_short_info(info):
+    info = info[1]  # Access the dictionary from the tuple
+    print("Company Name:", info["shortName"])
+    print("Industry:", info["industry"])
+    print("Market Cap:", info["marketCap"])
+    print("52-week High:", info["fiftyTwoWeekHigh"])
+    print("52-week Low:", info["fiftyTwoWeekLow"])
+
+print_short_info(infoApple)
