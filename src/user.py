@@ -56,3 +56,46 @@ def sell_stocks(user, amount, price, stock_symbol):
             print(f"{user.username} placed a sell order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
     else:
         print("Insufficient stocks to sell")
+
+
+def gather_stock_symbols_to_check(user):
+    stock_symbols = set()
+    for order in user.buy_orders + user.sell_orders:
+        stock_symbols.add(order.stock_symbol)
+    return stock_symbols
+
+def execute_buy_orders(user, stock_symbol, stock_price):
+    buy_orders_to_remove = []
+    for buy_order in user.buy_orders:
+        if buy_order.stock_symbol == stock_symbol and buy_order.price >= stock_price:
+            buy_stocks(user, buy_order.amount, buy_order.price, buy_order.stock_symbol)
+            buy_orders_to_remove.append(buy_order)
+    return buy_orders_to_remove
+
+def execute_sell_orders(user, stock_symbol, stock_price):
+    sell_orders_to_remove = []
+    for sell_order in user.sell_orders:
+        if sell_order.stock_symbol == stock_symbol and sell_order.price <= stock_price:
+            sell_stocks(user, sell_order.amount, sell_order.price, sell_order.stock_symbol)
+            sell_orders_to_remove.append(sell_order)
+    return sell_orders_to_remove
+
+def remove_executed_orders(user, orders_to_remove, order_type):
+    for order in orders_to_remove:
+        if order_type == 'buy':
+            user.buy_orders.remove(order)
+        elif order_type == 'sell':
+            user.sell_orders.remove(order)
+
+def check_orders(user):
+    stock_symbols_to_check = gather_stock_symbols_to_check(user)
+
+    for stock_symbol in stock_symbols_to_check:
+        _, _, stock_price = getdata.get_this_week_data(stock_symbol)
+
+        buy_orders_to_remove = execute_buy_orders(user, stock_symbol, stock_price)
+        remove_executed_orders(user, buy_orders_to_remove, 'buy')
+
+        sell_orders_to_remove = execute_sell_orders(user, stock_symbol, stock_price)
+        remove_executed_orders(user, sell_orders_to_remove, 'sell')
+
