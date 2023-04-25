@@ -1,6 +1,9 @@
 import yfinance as yf
 import datetime
 import pandas as pd
+import time
+
+data_cache = {} #Store fetched data
 
 def pull_data_realtime(stock_symbol):
     ticker = yf.Ticker(stock_symbol)
@@ -43,10 +46,22 @@ def pull_this_week_data(stock_symbol):
     Sorting: You can sort a DataFrame by one or multiple columns, in ascending or descending order.
     Importing and exporting data: Pandas supports importing and exporting data from/to various file formats, such as CSV, Excel, JSON, SQL, and more."""
 
-#Can I get this to work?
 
-dataAAPL_lastweek, closing_price, maxLastWeek = pull_this_week_data("AAPL")
-print(dataAAPL_lastweek, closing_price, maxLastWeek)
+def get_this_week_data(stock_symbol, cache_duration=3600):  # cache_duration is in seconds (default: 1 hour)
+    current_time = time.time()
+    if stock_symbol not in data_cache or current_time - data_cache[stock_symbol]["timestamp"] > cache_duration:
+        data, closing_price, maxLastWeek = pull_this_week_data(stock_symbol)
+        data_cache[stock_symbol] = {
+            "data": (data, closing_price, maxLastWeek),
+            "timestamp": current_time
+        }
+    
+    return data_cache[stock_symbol]["data"]
+
+
+
+#dataAAPL_lastweek, closing_price, maxLastWeek = pull_this_week_data("AAPL")
+#print(dataAAPL_lastweek, closing_price, maxLastWeek)
 
 
 
