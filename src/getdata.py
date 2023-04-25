@@ -20,13 +20,16 @@ def pull_this_week_data(stock_symbol):
     ticker = yf.Ticker(stock_symbol)
     data = ticker.history(interval='5m',start=oneWeekAgo,end=current_time)
 
+
+
     data.reset_index(inplace=True) # Reset the index of the DataFrame with data.reset_index(inplace=True), so that the DateTime index becomes a regular column.
     data['Date'] = data['Datetime'].dt.date # Create two new columns, 'Date' and 'Time', by extracting the date and time components from the 'Datetime' column using data['Datetime'].dt.date and data['Datetime'].dt.time, respectively.
     data['Time'] = data['Datetime'].dt.time 
     data = data[['Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume']] # Rearrange the columns to a more readable format, keeping only the necessary columns, using data = data[['Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume']].
     
     closing_price = data['Close'].iloc[-1]
-    return data, closing_price #Returns a pandas DataFrame, containing columns for date, time, open, high, low, close, and volume for each 5 min last week. And last closing
+    maxLastWeek = data['High'].max()
+    return data, closing_price, maxLastWeek #Returns a pandas DataFrame, containing columns for date, time, open, high, low, close, and volume for each 5 min last week. And last closing
 
 """ Explanation of a pandas DataFrame:
     Here are some key features and concepts related to pandas DataFrames:
@@ -41,8 +44,8 @@ def pull_this_week_data(stock_symbol):
     Importing and exporting data: Pandas supports importing and exporting data from/to various file formats, such as CSV, Excel, JSON, SQL, and more."""
 
 
-dataAAPL_lastweek, closing_price = pull_this_week_data("AAPL")
-print(dataAAPL_lastweek, closing_price)
+dataAAPL_lastweek, closing_price, maxLastWeek = pull_this_week_data("AAPL")
+print(dataAAPL_lastweek, closing_price, maxLastWeek)
 
 
 
