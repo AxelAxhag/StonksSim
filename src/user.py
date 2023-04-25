@@ -99,3 +99,29 @@ def check_orders(user):
         sell_orders_to_remove = execute_sell_orders(user, stock_symbol, stock_price)
         remove_executed_orders(user, sell_orders_to_remove, 'sell')
 
+def get_orders(user):
+    return {
+        'buy_orders': user.buy_orders,
+        'sell_orders': user.sell_orders
+    }
+
+def remove_order(user, order_type, stock_symbol, price, amount):
+    order_list = None
+
+    if order_type.lower() == 'buy':
+        order_list = user.buy_orders
+    elif order_type.lower() == 'sell':
+        order_list = user.sell_orders
+    else:
+        print("Invalid order type. Please enter 'buy' or 'sell'.")
+        return
+
+    for order_item in order_list:
+        if (order_item.stock_symbol == stock_symbol and
+                order_item.price == price and
+                order_item.amount == amount):
+            order_list.remove(order_item)
+            print(f"Removed {order_type} order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
+            return
+
+    print(f"No matching {order_type} order found for {amount} shares of {stock_symbol} at ${price:.2f} each.")
