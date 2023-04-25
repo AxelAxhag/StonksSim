@@ -47,7 +47,7 @@ def pull_this_week_data(stock_symbol):
     Importing and exporting data: Pandas supports importing and exporting data from/to various file formats, such as CSV, Excel, JSON, SQL, and more."""
 
 
-def get_this_week_data(stock_symbol, cache_duration=3600):  # cache_duration is in seconds (default: 1 hour)
+def get_this_week_data(stock_symbol, cache_duration=900):  # cache_duration is in seconds (default: 15 min)
     current_time = time.time()
     if stock_symbol not in data_cache or current_time - data_cache[stock_symbol]["timestamp"] > cache_duration:
         data, closing_price, maxLastWeek = pull_this_week_data(stock_symbol)
