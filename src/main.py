@@ -1,6 +1,12 @@
+
+# The python file where the program runs
+from interpreter import *
 from user import *
+from config import *
 
-global user
 
-u1 = user("felix", 10000000)
-u1.buy_stocks(10,170,"AAPL")
+
+while(True):
+    command = input()
+    commandRead(command)
+
