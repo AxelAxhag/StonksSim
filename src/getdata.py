@@ -43,6 +43,7 @@ def pull_this_week_data(stock_symbol):
     Sorting: You can sort a DataFrame by one or multiple columns, in ascending or descending order.
     Importing and exporting data: Pandas supports importing and exporting data from/to various file formats, such as CSV, Excel, JSON, SQL, and more."""
 
+#Can I get this to work?
 
 dataAAPL_lastweek, closing_price, maxLastWeek = pull_this_week_data("AAPL")
 print(dataAAPL_lastweek, closing_price, maxLastWeek)
