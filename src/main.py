@@ -19,14 +19,10 @@ else:
     activeUser.balance = balanceInput
     writeUserData(activeUser)
 
-user1 = input()
-u1 = user(user1, 10000)
-
 
 while(True):
     command = input()
-
-    commandRead(command)
+    commandRead(command, activeUser.username)
     writeUserData(activeUser)
 
 
