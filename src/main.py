@@ -17,6 +17,7 @@ else:
     createUserFile(activeUser)
     balanceInput = input("You're a new user! \n Input a balance to start with: ")
     activeUser.balance = balanceInput
+    writeUserData(activeUser)
 
 user1 = input()
 u1 = user(user1, 10000)
