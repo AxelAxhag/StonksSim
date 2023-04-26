@@ -32,7 +32,7 @@ def loadUserData(self):
     sellOrderString = data[2]
     buyOrderString = data[3]
 
-    self.balance = balance
+    self.balance = int(balance)
 
     allStockInfo = stockString.split(",")
     for i in range(len(allStockInfo) - 1):
