@@ -22,7 +22,7 @@ else:
 
 while(True):
     command = input()
-    commandRead(command, activeUser.username)
+    commandRead(command, activeUser)
     writeUserData(activeUser)
 
 
