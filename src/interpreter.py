@@ -3,7 +3,7 @@
 from user import *
 
 # Switch case for deciding which commands to execute
-def commandRead(command, username):
+def commandRead(command, self):
     words = command.split()
     if (len(words) == 3):
         words.append(0)                    # Sets the amount to 0 which says that the stock is listed for the current selling price 
@@ -16,11 +16,11 @@ def commandRead(command, username):
             return
     match words[0]:
         case "buy":
-            username.buy_stocks(int(words[2]), int(words[3]), words[1])
+            self.buy_stocks(int(words[2]), int(words[3]), words[1])
         case "sell":
-            username.sell_stocks(int(words[2]), int(words[3]), words[1])
+            self.sell_stocks(int(words[2]), int(words[3]), words[1])
         case "portfolio":
-            print(username.stocks)
+            print(self.stocks)
         case "logs":
             #TODO add logs to print
             print()
