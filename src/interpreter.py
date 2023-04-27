@@ -16,13 +16,13 @@ def commandRead(command, self):
             return
     match words[0]:
         case "buy":
-            self.buy_stocks(int(words[2]), float(words[3]), words[1])
+            self.buy_stocks(int(words[2]), float(words[3]), str(words[1]).upper())
         case "sell":
-            self.sell_stocks(int(words[2]), float(words[3]), words[1])
+            self.sell_stocks(int(words[2]), float(words[3]), str(words[1]).upper())
         case "portfolio":
-            print(self.stocks)
+            self.listPortfolio()
         case "cash":
-            print(self.balance)
+            print(f"${self.balance:.2f}")
         case "logs":
             #TODO add logs to print
             print()
