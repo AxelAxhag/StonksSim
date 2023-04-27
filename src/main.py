@@ -11,7 +11,7 @@ activeUser = user(nameInput, 0)
 if (userFileExists(activeUser)):
     loadUserData(activeUser)
     print(f"Welcome back, {activeUser.username}!")
-    print(f"Your balance is ${activeUser.balance}.\n")
+    print(f"Your balance is ${activeUser.balance:.2f}.\n")
     
 else:
     createUserFile(activeUser)
