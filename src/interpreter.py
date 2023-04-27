@@ -21,6 +21,8 @@ def commandRead(command, self):
             self.sell_stocks(int(words[2]), int(words[3]), words[1])
         case "portfolio":
             print(self.stocks)
+        case "cash":
+            print(self.balance)
         case "logs":
             #TODO add logs to print
             print()
