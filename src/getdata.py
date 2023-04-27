@@ -67,5 +67,3 @@ def print_short_info(info):
     print("Market Cap:", info["marketCap"])
     print("52-week High:", info["fiftyTwoWeekHigh"])
     print("52-week Low:", info["fiftyTwoWeekLow"])
-
-

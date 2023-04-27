@@ -1,5 +1,15 @@
 import os
 from user import *
+from cryptography.fernet import Fernet
+import base64
+
+def save_key(username, key):
+    with open(os.path.dirname(__file__) + "/saves/" + username + "_key", "wb") as key_file:
+        key_file.write(key)
+
+def load_key(username):
+    with open(os.path.dirname(__file__) + "/saves/" + username + "_key", "rb") as key_file:
+        return key_file.read()
 
 # Checks if there is an existing user in the /StonksSim/src/saves/ folder. It returns a boolean based on the result
 def userFileExists(self):
@@ -10,7 +20,19 @@ def userFileExists(self):
 def createUserFile(self):
     file = open(os.path.dirname(__file__) + "/saves/" + self.username, "x")     # creates a file in the saves folder
     file.close()
+
+    # Generate and save the encryption key
+    key = Fernet.generate_key()
+    save_key(self.username, key)
     
+def encrypt_data(data, key):
+    f = Fernet(key)
+    return f.encrypt(data.encode()).decode()
+
+def decrypt_data(data, key):
+    f = Fernet(key)
+    return f.decrypt(data.encode()).decode()
+
 # This function writes user data to a file in the /StonksSim/src/saves/ folder named after the user's username
 def writeUserData(self):
     file = open(os.path.dirname(__file__) + "/saves/" + self.username, "w")     # opens the save file in the saves folder in write mode
@@ -18,14 +40,20 @@ def writeUserData(self):
     
     stocks, sell_orders, buy_orders = formatOrders(self)        # formats stock, sell orders and buy orders in an easier format to read
 
-    file.write(str(balance) + "\n" + str(stocks) + "\n" + str(sell_orders) + "\n" + str(buy_orders) + "\n")     # writes all of the data to the file
+    data = str(balance) + "\n" + str(stocks) + "\n" + str(sell_orders) + "\n" + str(buy_orders) + "\n"
+    key = load_key(self.username)
+    encrypted_data = encrypt_data(data, key)
+
+    file.write(encrypted_data)     # writes encrypted data to the file
     file.close()
 
 # This funtion loads all of the user data to a pre-existing user when the program is started. Fields such as balance, stocks, sell orders etc are loaded here.
 def loadUserData(self):
     file = open(os.path.dirname(__file__) + "/saves/" + self.username, "r")
     
-    data = file.read().split("\n")
+    encrypted_data = file.read()
+    key = load_key(self.username)
+    data = decrypt_data(encrypted_data, key).split("\n")
 
     balance = data[0]           # balance data
     stockString = data[1]       # all stocks and their quantity stored in a string in the format: {Stock_symbol_1} {Stock amount_1},{Stock_symbol_2} {Stock amount_2},...,{Stock_symbol_n} {Stock amount_n}
