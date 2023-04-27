@@ -5,6 +5,7 @@ import time
 
 data_cache = {} #Store fetched data
 
+# Function to pull real-time data for a stock symbol
 def pull_data_realtime(stock_symbol):
     ticker = yf.Ticker(stock_symbol)
     
@@ -15,16 +16,15 @@ def pull_data_realtime(stock_symbol):
     info = ticker.info
     
     return data, info
-#infoApple = pull_data_realtime("AAPL")
 
+# Function to pull the last week's stock data for a stock symbol, and realtime
 def pull_this_week_data(stock_symbol):
     current_time = datetime.datetime.now()
     oneWeekAgo = current_time - datetime.timedelta(days=7)
     ticker = yf.Ticker(stock_symbol)
     data = ticker.history(interval='5m',start=oneWeekAgo,end=current_time)
 
-
-
+    # Process and reformat the DataFrame
     data.reset_index(inplace=True) # Reset the index of the DataFrame with data.reset_index(inplace=True), so that the DateTime index becomes a regular column.
     data['Date'] = data['Datetime'].dt.date # Create two new columns, 'Date' and 'Time', by extracting the date and time components from the 'Datetime' column using data['Datetime'].dt.date and data['Datetime'].dt.time, respectively.
     data['Time'] = data['Datetime'].dt.time 
@@ -46,7 +46,8 @@ def pull_this_week_data(stock_symbol):
     Sorting: You can sort a DataFrame by one or multiple columns, in ascending or descending order.
     Importing and exporting data: Pandas supports importing and exporting data from/to various file formats, such as CSV, Excel, JSON, SQL, and more."""
 
-
+# Function to get the last week's stock data for a stock symbol
+# with caching and cache duration (default: 15 minutes)
 def get_this_week_data(stock_symbol, cache_duration=900):  # cache_duration is in seconds (default: 15 min)
     current_time = time.time()
     if stock_symbol not in data_cache or current_time - data_cache[stock_symbol]["timestamp"] > cache_duration:
@@ -58,14 +59,7 @@ def get_this_week_data(stock_symbol, cache_duration=900):  # cache_duration is i
     
     return data_cache[stock_symbol]["data"]
 
-
-
-#dataAAPL_lastweek, closing_price, maxLastWeek = pull_this_week_data("AAPL")
-#print(dataAAPL_lastweek, closing_price, maxLastWeek)
-
-
-
-
+# Function to print short information about a stock
 def print_short_info(info):
     info = info[1]  # Access the dictionary from the tuple
     print("Company Name:", info["shortName"])
@@ -74,5 +68,4 @@ def print_short_info(info):
     print("52-week High:", info["fiftyTwoWeekHigh"])
     print("52-week Low:", info["fiftyTwoWeekLow"])
 
-#print_short_info(infoApple)
 
