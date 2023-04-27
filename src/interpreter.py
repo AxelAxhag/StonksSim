@@ -11,14 +11,14 @@ def commandRead(command, self):
         if (int(words[2]) < 1):                      
             print("Cannot buy < 1 stocks!")     # if you set a negative or 0 amount of stocks then give an error
             return
-        if (int(words[3]) < 0): 
+        if (float(words[3]) < 0): 
             print("Cannot sell stocks for < 0!")     # You can't buy stocks for negative money
             return
     match words[0]:
         case "buy":
-            self.buy_stocks(int(words[2]), int(words[3]), words[1])
+            self.buy_stocks(int(words[2]), float(words[3]), words[1])
         case "sell":
-            self.sell_stocks(int(words[2]), int(words[3]), words[1])
+            self.sell_stocks(int(words[2]), float(words[3]), words[1])
         case "portfolio":
             print(self.stocks)
         case "logs":
