@@ -30,6 +30,8 @@ def check_orders(user, lock):
         # Acquire the lock for thread-safe operations
         with lock:
             user.check_orders()
+        time.sleep(3)
+        
 
 # Define the process_commands function that continuously processes user commands
 def process_commands(user, lock):
