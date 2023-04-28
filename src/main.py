@@ -31,7 +31,7 @@ def check_orders(user, lock):
         with lock:
             user.check_orders()
         time.sleep(3)
-        
+
 
 # Define the process_commands function that continuously processes user commands
 def process_commands(user, lock):
@@ -55,6 +55,14 @@ commands_thread = threading.Thread(target=process_commands, args=(activeUser, us
 orders_thread.start()
 # Start the commands_thread
 commands_thread.start()
+
+#Restart thread if crash occurs
+while True:
+    time.sleep(2)
+    if commands_thread.is_alive() == False:
+        print("Restart because of crash")
+        commands_thread = threading.Thread(target=process_commands, args=(activeUser, user_lock))
+        commands_thread.start()
 
 # Wait for the orders_thread to finish
 orders_thread.join()
