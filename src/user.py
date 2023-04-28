@@ -85,7 +85,7 @@ class user:
         buy_orders_to_remove = []
         for buy_order in self.buy_orders:
             if buy_order.stock_symbol == stock_symbol and buy_order.price >= stock_price:
-                buy_stocks(self, buy_order.amount, buy_order.price, buy_order.stock_symbol)
+                self.buy_stocks(buy_order.amount, buy_order.price, buy_order.stock_symbol)
                 buy_orders_to_remove.append(buy_order)
         return buy_orders_to_remove
 
@@ -94,7 +94,7 @@ class user:
         sell_orders_to_remove = []
         for sell_order in self.sell_orders:
             if sell_order.stock_symbol == stock_symbol and sell_order.price <= stock_price:
-                sell_stocks(self, sell_order.amount, sell_order.price, sell_order.stock_symbol)
+                self.sell_stocks(sell_order.amount, sell_order.price, sell_order.stock_symbol)
                 sell_orders_to_remove.append(sell_order)
         return sell_orders_to_remove
 
@@ -108,16 +108,16 @@ class user:
     
     # Function to check and execute buy and sell orders
     def check_orders(self):
-        stock_symbols_to_check = gather_stock_symbols_to_check(self)
+        stock_symbols_to_check = self.gather_stock_symbols_to_check()
 
         for stock_symbol in stock_symbols_to_check:
             _, _, stock_price = getdata.get_this_week_data(stock_symbol)
 
-            buy_orders_to_remove = execute_buy_orders(self, stock_symbol, stock_price)
-            remove_executed_orders(self, buy_orders_to_remove, 'buy')
+            buy_orders_to_remove = self.execute_buy_orders(stock_symbol, stock_price)
+            self.remove_executed_orders(buy_orders_to_remove, 'buy')
 
-            sell_orders_to_remove = execute_sell_orders(self, stock_symbol, stock_price)
-            remove_executed_orders(self, sell_orders_to_remove, 'sell')
+            sell_orders_to_remove = self.execute_sell_orders(stock_symbol, stock_price)
+            self.remove_executed_orders(sell_orders_to_remove, 'sell')
 
     # Function to get a dictionary containing buy_orders and sell_orders
     def get_orders(self):
