@@ -147,3 +147,12 @@ class user:
                 return
 
         print(f"No matching {order_type} order found for {amount} shares of {stock_symbol} at ${price:.2f} each.")
+
+    
+    def listPortfolio(self):
+        listNumber = 1
+        for key, value in self.stocks.items():
+            print(f"{listNumber}. {key} : {value}")
+            
+
+    
