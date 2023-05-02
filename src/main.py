@@ -21,7 +21,7 @@ else:
     activeUser.balance = float(balanceInput)
     writeUserData(activeUser)
 
-infoForUser = "To buy a stock, the command is 'buy AAPL 10 200' where 'AAPL' is the stock symbol, '10' is the amount of stocks to buy, and '200' is the price per stock.\nTo sell a stock, the command is 'sell AAPL 5 250' where 'AAPL' is the stock symbol, '5' is the amount of stocks to sell, and '250' is the price per stock. \nTo view the user's current portfolio, the command is 'portfolio'."
+infoForUser = "📈Welcome to the StonksSimulator📉!\n\nHere you can trade stocks and make yourself a fantasy millionaire if not billionaire.\nThe program is easy to use but in case you need any help then type 'help' in the console!"
 print(infoForUser)
 
 # Define the check_orders function that continuously checks for user orders
@@ -37,7 +37,8 @@ def check_orders(user, lock):
 def process_commands(user, lock):
     while True:
         # Wait for user input as a command
-        command = input()
+        command = input("\n> ")
+        print()
         # Acquire the lock for thread-safe operations
         with lock:
             commandRead(command, user)
