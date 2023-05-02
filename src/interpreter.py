@@ -1,7 +1,7 @@
 # Interpreter for interpreting commands through the command line console 
 # buy AAPL 10(amount) 200(price per stock)
 from user import *
-
+import os
 # Switch case for deciding which commands to execute
 def commandRead(command, self):
     words = command.split()
@@ -22,9 +22,12 @@ def commandRead(command, self):
         case "portfolio":
             self.listPortfolio()
         case "cash":
-            print(f"${self.balance:.2f}")
-        case "logs":
-            #TODO add logs to print
-            print()
+            print(f"💵 Balance\n${self.balance:.2f}")
+        case "quit":
+            os._exit(0)
+        case "exit":
+            os._exit(0)
+        case "help":
+            print("[buy] {name of stock} {amount of stocks} {price per stock (optional parameter)}\n[sell] {name of stock} {amount of stocks} {price per stock (optional parameter)}\n[portfolio] -- Lists all of the user's balance and stocks\n[cash] -- Prints the user's balance\n[help] -- Prints this prompt for extra help\n[quit] -- Quits/exits the program\n[exit] -- Quits/exits the program\n\nTip: The last parameter in the buy/sell command syntax is optional. If it is blank then the buy/sell order will be set at market price for each stock!")
         case defualt:
-            print(f"The command '{words[0]}' does not exist")
+            print(f"The command '{words[0]}' does not exist!\nIf you're struggling with the commands then simply input 'help' into the console!")
