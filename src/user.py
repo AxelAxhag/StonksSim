@@ -67,9 +67,17 @@ class user:
                     del self.stocks[stock_symbol]
             else:
                 # Create a sell order if the given price is greater than the current price
-                new_order = self.order(amount, price, stock_symbol)
-                self.sell_orders.append(new_order)
-                print(f"{self.username} placed a sell order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
+                # Also checks so that there aren't any invalid sell requests being made where you have 1 stock but make two separate sell orders for the same stock
+                amountAlreadyUpForSale = 0
+                for sell_order in self.sell_orders:
+                    if (sell_order.stock_symbol == stock_symbol):
+                        amountAlreadyUpForSale += sell_order.amount
+                if (amountAlreadyUpForSale + amount <= self.stocks.get(stock_symbol, 0)):
+                    new_order = self.order(amount, price, stock_symbol)
+                    self.sell_orders.append(new_order)
+                    print(f"{self.username} placed a sell order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
+                else:
+                    print("Insufficient stocks to sell")
         else:
             print("Insufficient stocks to sell")
 
@@ -127,7 +135,7 @@ class user:
         }
 
     # Function to remove an order of a specific type, stock_symbol, price, and amount
-    def remove_order(self, order_type, stock_symbol, price, amount):
+    def remove_order(self, order_type, order_number):
         order_list = None
 
         if order_type.lower() == 'buy':
@@ -137,22 +145,37 @@ class user:
         else:
             print("Invalid order type. Please enter 'buy' or 'sell'.")
             return
+        
+        if (order_number > len(order_list) or order_number < 1):
+            print("Invalid order number. \nPlease provide a valid one buy looking at the orders by using the 'portfolio' command!")
+            return
 
-        for order_item in order_list:
-            if (order_item.stock_symbol == stock_symbol and
-                    order_item.price == price and
-                    order_item.amount == amount):
-                order_list.remove(order_item)
-                print(f"Removed {order_type} order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
-                return
-
-        print(f"No matching {order_type} order found for {amount} shares of {stock_symbol} at ${price:.2f} each.")
-
+        symbol = order_list[order_number - 1].stock_symbol
+        amount = order_list[order_number - 1].amount
+        del order_list[order_number - 1]
+        print(f"A {order_type} order was cancelled for {amount} {symbol} stocks!")
+        
+        
     
     def listPortfolio(self):
-        listNumber = 1
+        print("💼 PORTFOLIO 💼\n")
+        print(f"💵 BALANCE\n${self.balance:.2f}\n")
+        print("📈 STOCKS")
         for key, value in self.stocks.items():
-            print(f"{listNumber}. {key} : {value}")
+            _, _,stock_price = getdata.get_this_week_data(key)
+            print(f"{value} {key} (value: ${(float(stock_price) * float(value)):.2f})")
+
+        print()
+        print("💵➡️ BUY ORDERS")
+        for i in range(len(self.buy_orders)):
+            order = self.buy_orders[i]
+            print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f})")
+
+        print()
+        print("💵⬅️ SELL ORDERS")
+        for i in range(len(self.sell_orders)):
+            order = self.sell_orders[i]
+            print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f})")
             
 
     
