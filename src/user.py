@@ -24,6 +24,16 @@ class user:
         _, _, stock_price = getdata.get_this_week_data(stock_symbol)
         full_price_of_buy = stock_price * amount
 
+        # Checks so that multiple buy orders aren't more valued than the actual balance of the user 
+        balanceAlreadyUsedForOrders = 0
+        for buy_order in self.buy_orders:
+            balanceAlreadyUsedForOrders += float(buy_order.price) * buy_order.amount
+
+        if (self.balance < balanceAlreadyUsedForOrders + amount * price):
+            print(balanceAlreadyUsedForOrders)
+            print("Not enough balance! Cancel a buy order to be able to free up balance.")
+            return
+
         # Buy stock at the current price if no specific price is given or if the given price is equal or greater than the current price
         # Check if the user has enough balance before buying
         if price != 0:
@@ -36,10 +46,10 @@ class user:
                 else:
                     print("Insufficient funds")
             else: 
-                # Create a buy order if the given price is less than the current price
+                # Create a buy order if the given price is less than the current price  
                 new_order = self.order(amount, price, stock_symbol)
                 self.buy_orders.append(new_order)
-                print(f"{self.username} placed a buy order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
+                print(f"{self.username} placed a buy order for {amount} shares of {stock_symbol} at ${price:.2f} each.")                    
         else:
             if self.balance >= full_price_of_buy:
                 self.balance -= full_price_of_buy
@@ -158,8 +168,11 @@ class user:
         
     
     def listPortfolio(self):
+        balanceAlreadyUsedForOrders = 0
+        for buy_order in self.buy_orders:
+            balanceAlreadyUsedForOrders += float(buy_order.price) * buy_order.amount
         print("💼 PORTFOLIO 💼\n")
-        print(f"💵 BALANCE\n${self.balance:.2f}\n")
+        print(f"💵 BALANCE\n${self.balance:.2f} (🔒 ${balanceAlreadyUsedForOrders:.2f})\n")
         print("📈 STOCKS")
         for key, value in self.stocks.items():
             _, _,stock_price = getdata.get_this_week_data(key)
