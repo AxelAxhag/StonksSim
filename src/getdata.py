@@ -70,13 +70,13 @@ def print_short_info(info):
 
 # Get max of stock during a specific time interval
 def get_max_stock_value(ticker, start_date, end_date):
-    stock_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    stock_data = yf.download(ticker, interval="5m", start=start_date, end=end_date, progress=False)
     max_value = stock_data['Adj Close'].max()
     return max_value
 
 # Get min of stock during a specific time interval
 def get_min_stock_value(ticker, start_date, end_date):
-    stock_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    stock_data = yf.download(ticker, interval="5m", start=start_date, end=end_date, progress=False)
     min_value = stock_data['Adj Close'].min()
     return min_value
 
