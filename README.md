@@ -8,7 +8,7 @@ The Stonk Simulator is a Python-based program that allows users to engage in a v
 1. Clone this repository to your local machine.
 2. Open a terminal/command prompt window and navigate to the directory where you cloned the repository.
 3. Install the required dependencies by running the following command: `pip install -r requirements.txt`
-4. Start the simulator by running the following command: 'python3 src/main.py'
+4. Start the simulator by running the following command: `python3 src/main.py`
 
 
 ### How to Use the Simulator
