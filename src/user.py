@@ -172,7 +172,7 @@ class user:
         for buy_order in self.buy_orders:
             balanceAlreadyUsedForOrders += float(buy_order.price) * buy_order.amount
         print("💼 PORTFOLIO 💼\n")
-        print(f"💵 BALANCE\n${self.balance:.2f} (🔒 ${balanceAlreadyUsedForOrders:.2f})\n")
+        print(f"💵 BALANCE\n${self.balance:.2f} (🔓 ${self.balance - balanceAlreadyUsedForOrders:.2f})\n")
         print("📈 STOCKS")
         for key, value in self.stocks.items():
             _, _,stock_price = getdata.get_this_week_data(key)
