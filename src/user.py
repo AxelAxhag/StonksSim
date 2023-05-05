@@ -18,7 +18,7 @@ class user:
             self.amount = amount
             self.price = price
             self.stock_symbol = stock_symbol
-            self.date = datetime.datetime.now()
+            self.date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # Function to buy stocks, taking amount, price, and stock_symbol as input
     def buy_stocks(self, amount, price, stock_symbol):
@@ -178,40 +178,31 @@ class user:
         for key, value in self.stocks.items():
             _, _,stock_price = getdata.get_this_week_data(key)
             print(f"{value} {key} (value: ${(float(stock_price) * float(value)):.2f})")
+            
 
         print()
         print("💵➡️ BUY ORDERS")
         for i in range(len(self.buy_orders)):
             order = self.buy_orders[i]
-            print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f})")
+            print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f}) orderd at time: [{order.date}]")
 
         print()
         print("💵⬅️ SELL ORDERS")
         for i in range(len(self.sell_orders)):
             order = self.sell_orders[i]
-            print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f})")
+            print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f}) orderd at time: [{order.date}]")
             
 
     def check_orders_retroactive(self):
         time_now = datetime.datetime.now()
-        
-        stock_symbols_to_check = self.gather_stock_symbols_to_check()
 
-        for stock_symbol in stock_symbols_to_check:
-            min_overtime = get_min_stock_value(stock_symbol, buy_order.date, time_now)
+        for buy_order in self.buy_orders:
+            min_overtime = getdata.get_min_stock_value(buy_order.stock_symbol, buy_order.date, time_now)
 
-            buy_orders_to_remove = self.execute_buy_orders(stock_symbol, min_overtime)
-            self.remove_executed_orders(buy_orders_to_remove, 'buy')
+            buy_orders_remove = self.execute_buy_orders(buy_order.stock_symbol, min_overtime)
+            self.remove_executed_orders(buy_orders_remove, 'buy')
 
-            max_overtime = get_max_stock_value(stock_symbol, sell_orders.date, time_now)
-
-            sell_orders_to_remove = self.execute_sell_orders(stock_symbol, max_overtime)
-            self.remove_executed_orders(sell_orders_to_remove, 'sell')
-
-
-            
-                    
-            
-            
-            
-
+        for sell_orders in self.sell_orders:
+            max_overtime = getdata.get_max_stock_value(sell_orders.stock_symbol, sell_orders.date, time_now)
+            sell_orders_remove = self.execute_sell_orders(sell_orders.stock_symbol, max_overtime)
+            self.remove_executed_orders(sell_orders_remove, 'sell')

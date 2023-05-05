@@ -73,7 +73,7 @@ def loadUserData(self):
         sellOrderInfo = allSellOrderInfo[i]
         sellOrderInfoArr = sellOrderInfo.split(";")
         order = user.order(int(sellOrderInfoArr[1]), float(sellOrderInfoArr[2]), sellOrderInfoArr[0])
-        order.date = sellOrderInfoArr[3]
+        order.date = datetime.datetime.strptime(sellOrderInfoArr[3] , '%Y-%m-%d %H:%M:%S')
         self.sell_orders.append(order)      # [1]: amount of stocks to sell; [2]: price per stock in float, [0]: name of stock/stock_symbol
 
     allBuyOrderInfo = buyOrderString.split(",")     
@@ -81,7 +81,7 @@ def loadUserData(self):
         buyOrderInfo = allBuyOrderInfo[i]
         buyOrderInfoArr = buyOrderInfo.split(";")
         order = user.order(int(buyOrderInfoArr[1]), float(buyOrderInfoArr[2]), buyOrderInfoArr[0])
-        order.date = buyOrderInfoArr[3]
+        order.date =  datetime.datetime.strptime(buyOrderInfoArr[3] , '%Y-%m-%d %H:%M:%S')
         self.buy_orders.append(order)      # [1]: amount of stocks to sell; [2]: price per stock in float, [0]: name of stock/stock_symbol
 
     file.close()
