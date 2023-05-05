@@ -65,20 +65,24 @@ def loadUserData(self):
     allStockInfo = stockString.split(",")
     for i in range(len(allStockInfo) - 1):          # for every unique stock in the array allStockInfo
         stockInfo = allStockInfo[i]
-        stockInfoArr = stockInfo.split()
+        stockInfoArr = stockInfo.split(";")
         self.stocks[stockInfoArr[0]] = int(stockInfoArr[1])     # [0]: name of stock/stock_symbol; [1]: amount of a specific stock
 
     allSellOrderInfo = sellOrderString.split(",")       
     for i in range(len(allSellOrderInfo) - 1):          # for every sell order in the array allSellOrderInfo
         sellOrderInfo = allSellOrderInfo[i]
-        sellOrderInfoArr = sellOrderInfo.split()
-        self.sell_orders.append(user.order(int(sellOrderInfoArr[1]), float(sellOrderInfoArr[2]), sellOrderInfoArr[0]))      # [1]: amount of stocks to sell; [2]: price per stock in float, [0]: name of stock/stock_symbol
+        sellOrderInfoArr = sellOrderInfo.split(";")
+        order = user.order(int(sellOrderInfoArr[1]), float(sellOrderInfoArr[2]), sellOrderInfoArr[0])
+        order.date = sellOrderInfoArr[3]
+        self.sell_orders.append(order)      # [1]: amount of stocks to sell; [2]: price per stock in float, [0]: name of stock/stock_symbol
 
     allBuyOrderInfo = buyOrderString.split(",")     
     for i in range(len(allBuyOrderInfo) - 1):           # for every sell order in the array allBuyOrderInfo
         buyOrderInfo = allBuyOrderInfo[i]
-        buyOrderInfoArr = buyOrderInfo.split()
-        self.buy_orders.append(user.order(int(buyOrderInfoArr[1]), float(buyOrderInfoArr[2]), buyOrderInfoArr[0]))      # [1]: amount of stocks to sell; [2]: price per stock in float, [0]: name of stock/stock_symbol
+        buyOrderInfoArr = buyOrderInfo.split(";")
+        order = user.order(int(buyOrderInfoArr[1]), float(buyOrderInfoArr[2]), buyOrderInfoArr[0])
+        order.date = buyOrderInfoArr[3]
+        self.buy_orders.append(order)      # [1]: amount of stocks to sell; [2]: price per stock in float, [0]: name of stock/stock_symbol
 
     file.close()
 
@@ -86,16 +90,16 @@ def loadUserData(self):
 def formatOrders(self):
     stocksString = ""
     for key, value in self.stocks.items():
-        stocksString += str(key) + " " + str(value) + ","
+        stocksString += str(key) + ";" + str(value) + ","
 
     buyOrderString = ""
     for i in range(len(self.buy_orders)):
         order = self.buy_orders[i]
-        buyOrderString += order.stock_symbol + " " + str(order.amount) + " " + str(order.price) + ","
+        buyOrderString += order.stock_symbol + ";" + str(order.amount) + ";" + str(order.price) + ";" + str(order.date) + ","
 
     sellOrderString = ""
     for i in range(len(self.sell_orders)):
         order = self.sell_orders[i]
-        sellOrderString += order.stock_symbol + " " + str(order.amount) + " " + str(order.price) + ","
+        sellOrderString += order.stock_symbol + ";" + str(order.amount) + ";" + str(order.price) + ";" + str(order.date) + ","
 
     return stocksString, sellOrderString, buyOrderString

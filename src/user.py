@@ -1,5 +1,6 @@
 # Import getdata module for fetching stock market data
 import getdata
+import datetime
 
 # Define the user class
 class user:
@@ -17,6 +18,7 @@ class user:
             self.amount = amount
             self.price = price
             self.stock_symbol = stock_symbol
+            self.date = datetime.datetime.now()
 
     # Function to buy stocks, taking amount, price, and stock_symbol as input
     def buy_stocks(self, amount, price, stock_symbol):
@@ -30,7 +32,6 @@ class user:
             balanceAlreadyUsedForOrders += float(buy_order.price) * buy_order.amount
 
         if (self.balance < balanceAlreadyUsedForOrders + amount * price):
-            print(balanceAlreadyUsedForOrders)
             print("Not enough balance! Cancel a buy order to be able to free up balance.")
             return
 
@@ -191,4 +192,26 @@ class user:
             print(f"#{i + 1}: {order.amount} {order.stock_symbol} at ${order.price} per stock (tot. ${(float(order.amount) * float(order.price)):.2f})")
             
 
-    
+    def check_orders_retroactive(self):
+        time_now = datetime.datetime.now()
+        
+        stock_symbols_to_check = self.gather_stock_symbols_to_check()
+
+        for stock_symbol in stock_symbols_to_check:
+            min_overtime = get_min_stock_value(stock_symbol, buy_order.date, time_now)
+
+            buy_orders_to_remove = self.execute_buy_orders(stock_symbol, min_overtime)
+            self.remove_executed_orders(buy_orders_to_remove, 'buy')
+
+            max_overtime = get_max_stock_value(stock_symbol, sell_orders.date, time_now)
+
+            sell_orders_to_remove = self.execute_sell_orders(stock_symbol, max_overtime)
+            self.remove_executed_orders(sell_orders_to_remove, 'sell')
+
+
+            
+                    
+            
+            
+            
+

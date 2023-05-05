@@ -79,5 +79,3 @@ def get_min_stock_value(ticker, start_date, end_date):
     stock_data = yf.download(ticker, interval="5m", start=start_date, end=end_date, progress=False)
     min_value = stock_data['Adj Close'].min()
     return min_value
-
-
