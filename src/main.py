@@ -12,6 +12,7 @@ activeUser = user(nameInput, 0)
 
 if (userFileExists(activeUser)):
     loadUserData(activeUser)
+    
     print(f"Welcome back, {activeUser.username}!")
     print(f"Your balance is ${activeUser.balance:.2f}.\n")
     
@@ -23,6 +24,9 @@ else:
 
 infoForUser = "📈Welcome to the StonksSimulator📉!\n\nHere you can trade stocks and make yourself a fantasy millionaire if not billionaire.\nThe program is easy to use but in case you need any help then type 'help' in the console!"
 print(infoForUser)
+
+
+
 
 # Define the check_orders function that continuously checks for user orders
 def check_orders(user, lock):
