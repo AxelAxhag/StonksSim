@@ -61,7 +61,7 @@ commands_thread.start()
 while True:
     time.sleep(2)
     if commands_thread.is_alive() == False:
-        print("Restart because of crash")
+        print("🚨 Restart because of crash")
         commands_thread = threading.Thread(target=process_commands, args=(activeUser, user_lock))
         commands_thread.start()
 
