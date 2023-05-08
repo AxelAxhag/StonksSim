@@ -25,7 +25,9 @@ Once the simulator is running, you can enter commands into the console to perfor
 - `help`: Display a list of available commands and their syntax.
 - `quit` or `exit`: Exit the simulator.
 
-Note that the `buy` and `sell` commands require you to specify the stock symbol (e.g., AAPL for Apple), the amount of stock you want to buy/sell, and the price you want to buy/sell it for. If you don't specify a price, the order will be executed at the current market price.
+Note that the `buy` and `sell` commands require you to specify the stock symbol (e.g., AAPL for Apple), the amount of stock you want to buy/sell, and the price you want to buy/sell it for. If you don't specify a price, the order will be executed at the current market price. 
+
+Orders go through while "offline" so there's no need to constantly run the program!
 
 ### 🧠 How the Simulator Works
 
