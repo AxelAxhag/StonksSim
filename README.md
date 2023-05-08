@@ -19,6 +19,7 @@ Once the simulator is running, you can enter commands into the console to perfor
 - `sell {stock symbol} {amount} {price}`: Sell a certain amount of a stock at a specific price.
 - `portfolio`: View your current portfolio of stocks.
 - `cash`: View your current balance.
+- `cancel {'buy'/'sell'} {buy/sell order number}`: Cancels a buy or sell order. In order to get the order number, use the `portfolio` command and check the left handside where the order number is listed after the '#' symbol
 - `help`: Display a list of available commands and their syntax.
 - `quit` or `exit`: Exit the simulator.
 
