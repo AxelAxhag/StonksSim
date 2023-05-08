@@ -1,7 +1,7 @@
 # StonksSim
 ## Overview
 
-> **Note**: The stocks available are only stocks that are list by NASDAQ!  
+> **Note**: The stocks available are only stocks that are listed by NASDAQ!  
 
 The Stonk Simulator is a Python-based program that allows users to engage in a virtual stock market environment, enabling them to buy and sell fake stocks from real companies. By leveraging the Yahoo Finance API, the simulator provides users with up-to-date and accurate market data, offering an engaging and educational experience for anyone interested in learning about stock trading and investment strategies. 
 
