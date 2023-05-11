@@ -15,7 +15,20 @@ def commandRead(command, self):
             print("Cannot sell stocks for < 0!")     # You can't buy stocks for negative money
             return
     match words[0]:
+        case "price":
+            if(len(words) != 2):
+                print("Missing stock symbol")
+                return
+            _,_,currentPrice = getdata.get_this_week_data(str(words[1]).upper())
+            print(f"Price of {str(words[1]).upper()} is ${currentPrice:.2f}")
         case "buy":
+            if float(words[3]) == 0:
+                _,_,currentPrice = getdata.get_this_week_data(str(words[1]).upper())
+                total = currentPrice * int(words[2])
+                if input(f"Total price will be ${total:.2f}, are you sure? (Y/N)\n\n> ").strip().upper() != "Y":
+                    print("\nDid not buy")
+                    return
+            print()
             self.buy_stocks(int(words[2]), float(words[3]), str(words[1]).upper())
         case "sell":
             self.sell_stocks(int(words[2]), float(words[3]), str(words[1]).upper())

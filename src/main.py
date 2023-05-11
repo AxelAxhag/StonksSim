@@ -5,6 +5,8 @@ from user import *
 from save import *
 import threading
 import time
+import traceback
+import datetime
 
 
 nameInput = input("What is your username?: ").strip()
@@ -45,8 +47,15 @@ def process_commands(user, lock):
         print()
         # Acquire the lock for thread-safe operations
         with lock:
-            commandRead(command, user)
+            try:
+                commandRead(command, user)
+            except Exception as e:
+                print("🚨 Command input was invalid or an error occurd, use the 'help' command or check the error logs!")
+                file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "w")
+                file.write("Error occured at: " + datetime.datetime.now()+ "\n" + traceback.format_exc()+"\n")
+                file.close()
             writeUserData(user)
+
 
 # Create a user_lock object of type threading.Lock for thread-safe operations
 user_lock = threading.Lock()
