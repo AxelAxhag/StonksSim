@@ -18,7 +18,7 @@ def try_catch_create_user(activeUser):
         activeUser.balance = float(balanceInput)
         writeUserData(activeUser)
     except Exception as e:
-        print("🚨 Balance must be numbers!")
+        print("🚨 Error! Balance must be numbers!")
         file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "w")
         file.write("Error occured at: " + str(datetime.datetime.now())+ "\n" + traceback.format_exc()+"\n")
         file.close()
