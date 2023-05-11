@@ -69,13 +69,23 @@ class user:
         if stock_symbol in self.stocks and self.stocks[stock_symbol] >= amount:
             # Sell stocks at the current price if no specific price is given or if the given price is equal or less than the current price
             if price == 0 or price <= stock_price:
-                # Update the user's balance and stocks
-                self.balance += full_price_of_sell
-                self.stocks[stock_symbol] -= amount
-                print(f"{self.username} sold {amount} shares of {stock_symbol} at ${stock_price:.2f} each, for a total of ${full_price_of_sell:.2f}.")
+                amountAlreadyUpForSale = 0
+                for sell_order in self.sell_orders:
+                    if (sell_order.stock_symbol == stock_symbol):
+                        amountAlreadyUpForSale += sell_order.amount
+                
+                if (amountAlreadyUpForSale + amount <= self.stocks.get(stock_symbol, 0)):
+                    # Update the user's balance and stocks
+                    self.balance += full_price_of_sell
+                    self.stocks[stock_symbol] -= amount
+                    print(f"{self.username} sold {amount} shares of {stock_symbol} at ${stock_price:.2f} each, for a total of ${full_price_of_sell:.2f}.")
 
-                if self.stocks[stock_symbol] == 0:
-                    del self.stocks[stock_symbol]
+                    if self.stocks[stock_symbol] == 0:
+                        del self.stocks[stock_symbol]
+                else:
+                    print("Insufficient amount of stocks to sell. Cancel orders to free up stocks or buy more!")
+                    return()
+
             else:
                 # Create a sell order if the given price is greater than the current price
                 # Also checks so that there aren't any invalid sell requests being made where you have 1 stock but make two separate sell orders for the same stock
@@ -88,9 +98,11 @@ class user:
                     self.sell_orders.append(new_order)
                     print(f"{self.username} placed a sell order for {amount} shares of {stock_symbol} at ${price:.2f} each.")
                 else:
-                    print("Insufficient stocks to sell")
+                    print("Insufficient amount of stocks to sell. Cancel orders to free up stocks or buy more!")
+                    return
         else:
-            print("Insufficient stocks to sell")
+            print("Insufficient amount of stocks to sell. Cancel orders to free up stocks or buy more!")
+            return
 
     # Function to gather stock symbols from buy and sell orders
     def gather_stock_symbols_to_check(self):
@@ -199,10 +211,27 @@ class user:
         for buy_order in self.buy_orders:
             min_overtime = getdata.get_min_stock_value(buy_order.stock_symbol, buy_order.date, time_now)
 
-            buy_orders_remove = self.execute_buy_orders(buy_order.stock_symbol, min_overtime)
-            self.remove_executed_orders(buy_orders_remove, 'buy')
+            if (buy_order.price >= min_overtime):
+                # ta bort balance
+                self.balance -= buy_order.price * buy_order.amount
+                # lägg till stocks
+                self.stocks[buy_order.stock_symbol] += buy_order.amount
+                if self.stocks[buy_order.stock_symbol] == 0:
+                    del self.stocks[buy_order.stock_symbol]
+                # ta bort order
+                self.buy_orders.remove(buy_order)
+            
 
-        for sell_orders in self.sell_orders:
-            max_overtime = getdata.get_max_stock_value(sell_orders.stock_symbol, sell_orders.date, time_now)
-            sell_orders_remove = self.execute_sell_orders(sell_orders.stock_symbol, max_overtime)
-            self.remove_executed_orders(sell_orders_remove, 'sell')
+        for sell_order in self.sell_orders:
+            max_overtime = getdata.get_max_stock_value(sell_order.stock_symbol, sell_order.date, time_now)
+
+            if (sell_order.price <= max_overtime):
+                # lägg till balance
+                self.balance += sell_order.price * sell_order.amount
+                # ta bort stocks
+                self.stocks[sell_order.stock_symbol] -= sell_order.amount
+                if self.stocks[sell_order.stock_symbol] == 0:
+                    del self.stocks[sell_order.stock_symbol]
+                # ta bort order
+                self.sell_orders.remove(sell_order)
+
