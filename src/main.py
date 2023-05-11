@@ -58,7 +58,7 @@ def process_commands(user, lock):
             except Exception as e:
                 print("🚨 Command input was invalid or an error occurd, use the 'help' command or check the error logs!")
                 file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "w")
-                file.write("Error occured at: " + datetime.datetime.now()+ "\n" + traceback.format_exc()+"\n")
+                file.write("Error occured at: " + str(datetime.datetime.now())+ "\n" + traceback.format_exc()+"\n")
                 file.close()
             writeUserData(user)
 
