@@ -32,7 +32,7 @@ def pull_this_week_data(stock_symbol):
     
     closing_price = data['Close'].iloc[-1]
     maxLastWeek = data['High'].max()
-    return data, closing_price, maxLastWeek #Returns a pandas DataFrame, containing columns for date, time, open, high, low, close, and volume for each 5 min last week. And last closing
+    return data, maxLastWeek, closing_price #Returns a pandas DataFrame, containing columns for date, time, open, high, low, close, and volume for each 5 min last week. And last closing
 
 """ Explanation of a pandas DataFrame:
     Here are some key features and concepts related to pandas DataFrames:
