@@ -34,13 +34,8 @@ else:
     createUserFile(activeUser)
     try_catch_create_user(activeUser)
 
-
-
 infoForUser = "📈Welcome to the StonksSimulator📉!\n\nHere you can trade stocks and make yourself a fantasy millionaire if not billionaire.\nThe program is easy to use but in case you need any help then type 'help' in the console!"
 print(infoForUser)
-
-
-
 
 # Define the check_orders function that continuously checks for user orders
 def check_orders(user, lock):
@@ -49,7 +44,6 @@ def check_orders(user, lock):
         with lock:
             user.check_orders()
         time.sleep(3)
-
 
 # Define the process_commands function that continuously processes user commands
 def process_commands(user, lock):
@@ -67,7 +61,6 @@ def process_commands(user, lock):
                 file.write("Error occured at: " + datetime.datetime.now()+ "\n" + traceback.format_exc()+"\n")
                 file.close()
             writeUserData(user)
-
 
 # Create a user_lock object of type threading.Lock for thread-safe operations
 user_lock = threading.Lock()
