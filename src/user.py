@@ -216,11 +216,8 @@ class user:
                 self.balance -= buy_order.price * buy_order.amount
                 # lägg till stocks
                 self.stocks[buy_order.stock_symbol] += buy_order.amount
-                if self.stocks[buy_order.stock_symbol] == 0:
-                    del self.stocks[buy_order.stock_symbol]
                 # ta bort order
                 self.buy_orders.remove(buy_order)
-            
 
         for sell_order in self.sell_orders:
             max_overtime = getdata.get_max_stock_value(sell_order.stock_symbol, sell_order.date, time_now)
