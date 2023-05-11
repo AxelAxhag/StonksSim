@@ -199,10 +199,25 @@ class user:
         for buy_order in self.buy_orders:
             min_overtime = getdata.get_min_stock_value(buy_order.stock_symbol, buy_order.date, time_now)
 
-            buy_orders_remove = self.execute_buy_orders(buy_order.stock_symbol, min_overtime)
-            self.remove_executed_orders(buy_orders_remove, 'buy')
+            if (buy_order.price >= min_overtime):
+                # lägg till balance
+                self.balance -= buy_order.price * buy_order.amount
+                # lägg till stocks
+                self.stocks[buy_order.stock_symbol] += buy_order.amount
+                # ta bort order
+                self.buy_orders.remove(buy_order)
+            
 
-        for sell_orders in self.sell_orders:
-            max_overtime = getdata.get_max_stock_value(sell_orders.stock_symbol, sell_orders.date, time_now)
-            sell_orders_remove = self.execute_sell_orders(sell_orders.stock_symbol, max_overtime)
-            self.remove_executed_orders(sell_orders_remove, 'sell')
+        for sell_order in self.sell_orders:
+            max_overtime = getdata.get_max_stock_value(sell_order.stock_symbol, sell_order.date, time_now)
+
+            if (sell_order.price <= max_overtime):
+                # lägg till balance
+                self.balance += sell_order.price * sell_order.amount
+                # ta bort stocks
+                self.stocks[sell_order.stock_symbol] -= sell_order.amount
+                if self.stocks[sell_order.stock_symbol] == 0:
+                    del self.stocks[sell_order.stock_symbol]
+                # ta bort order
+                self.sell_orders.remove(sell_order)
+
