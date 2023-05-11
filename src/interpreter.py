@@ -41,7 +41,7 @@ def commandRead(command, self):
         case "exit":
             os._exit(0)
         case "help":
-            print("[buy] {name of stock(stocksymbol)} {amount of stocks} {price per stock (optional parameter)}\n[sell] {name of stock(stocksymbol)} {amount of stocks} {price per stock (optional parameter)}\n[cancel] {buy/sell} {order number} -- Cancels a sell/buy order. You get the order number by using the 'portfolio' command.\n[portfolio] -- Lists all of the user's balance and stocks\n[cash] -- Prints the user's balance\n[help] -- Prints this prompt for extra help\n[quit] -- Quits/exits the program\n[exit] -- Quits/exits the program\n\nTip: The last parameter in the buy/sell command syntax is optional. If it is blank then the buy/sell order will be set at market price for each stock!")
+            print("[buy] {name of stock(stocksymbol)} {amount of stocks} {price per stock (optional parameter)}\n[sell] {name of stock(stocksymbol)} {amount of stocks} {price per stock (optional parameter)}\n[cancel] {buy/sell} {order number} -- Cancels a sell/buy order. You get the order number by using the 'portfolio' command\n[portfolio] -- Lists all of the user's balance and stocks\n[price] {name of stock(stocksymbol)} -- Prints the current price of a certain stock\n[cash] -- Prints the user's balance\n[help] -- Prints this prompt for extra help\n[quit] -- Quits/exits the program\n[exit] -- Quits/exits the program\n\nTip: The last parameter in the buy/sell command syntax is optional. If it is blank then the buy/sell order will be set at market price for each stock!")
         case "cancel":
             self.remove_order(words[1], int(words[2]))
         case defualt:
