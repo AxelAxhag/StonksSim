@@ -35,7 +35,10 @@ def commandRead(command, self):
         case "portfolio":
             self.listPortfolio()
         case "cash":
-            print(f"💵 Balance\n${self.balance:.2f}")
+            balanceAlreadyUsedForOrders = 0
+            for buy_order in self.buy_orders:
+                balanceAlreadyUsedForOrders += float(buy_order.price) * buy_order.amount
+            print(f"💵 BALANCE\n${self.balance:.2f} (🔓 ${self.balance - balanceAlreadyUsedForOrders:.2f})\n")
         case "quit":
             os._exit(0)
         case "exit":
