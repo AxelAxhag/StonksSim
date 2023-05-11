@@ -51,7 +51,7 @@ def pull_this_week_data(stock_symbol):
 def get_this_week_data(stock_symbol, cache_duration=900):  # cache_duration is in seconds (default: 15 min)
     current_time = time.time()
     if stock_symbol not in data_cache or current_time - data_cache[stock_symbol]["timestamp"] > cache_duration:
-        data, closing_price, maxLastWeek = pull_this_week_data(stock_symbol)
+        data, maxLastWeek, closing_price = pull_this_week_data(stock_symbol)
         data_cache[stock_symbol] = {
             "data": (data, closing_price, maxLastWeek),
             "timestamp": current_time
@@ -72,8 +72,8 @@ def print_short_info(info):
 def get_max_stock_value(ticker, start_date, end_date):
     stock_data = yf.download(ticker, interval="5m", start=start_date, end=end_date, progress=False, show_errors=False)
     if stock_data.empty:
-        _,_, v = get_this_week_data(ticker)
-        return v
+        _,_,last_closing_price  = get_this_week_data(ticker)
+        return last_closing_price
     max_value = stock_data['Adj Close'].max()
     return max_value
 
@@ -81,7 +81,7 @@ def get_max_stock_value(ticker, start_date, end_date):
 def get_min_stock_value(ticker, start_date, end_date):
     stock_data = yf.download(ticker, interval="5m", start=start_date, end=end_date, progress=False, show_errors=False)
     if stock_data.empty:
-        _,_, v = get_this_week_data(ticker)
-        return v
+        _,_, last_closing_price = get_this_week_data(ticker)
+        return last_closing_price
     min_value = stock_data['Adj Close'].min()
     return min_value
