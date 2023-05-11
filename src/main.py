@@ -12,6 +12,18 @@ import datetime
 nameInput = input("What is your username?: ").strip()
 activeUser = user(nameInput, 0)
 
+def try_catch_create_user(activeUser):
+    try:
+        balanceInput = input("You're a new user!\nInput a balance to start with: ")
+        activeUser.balance = float(balanceInput)
+        writeUserData(activeUser)
+    except Exception as e:
+        print("🚨 Balance must be numbers!")
+        file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "w")
+        file.write("Error occured at: " + str(datetime.datetime.now())+ "\n" + traceback.format_exc()+"\n")
+        file.close()
+        try_catch_create_user(activeUser)
+
 if (userFileExists(activeUser)):
     loadUserData(activeUser)
     print(f"Welcome back, {activeUser.username}!")
@@ -20,9 +32,9 @@ if (userFileExists(activeUser)):
     
 else:
     createUserFile(activeUser)
-    balanceInput = input("You're a new user!\nInput a balance to start with: ")
-    activeUser.balance = float(balanceInput)
-    writeUserData(activeUser)
+    try_catch_create_user(activeUser)
+
+
 
 infoForUser = "📈Welcome to the StonksSimulator📉!\n\nHere you can trade stocks and make yourself a fantasy millionaire if not billionaire.\nThe program is easy to use but in case you need any help then type 'help' in the console!"
 print(infoForUser)
