@@ -19,7 +19,7 @@ def try_catch_create_user(activeUser):
         writeUserData(activeUser)
     except Exception as e:
         print("🚨 Error! Balance must be numbers!")
-        file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "w")
+        file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "a")
         file.write("Error occured at: " + str(datetime.datetime.now())+ "\n" + traceback.format_exc()+"\n")
         file.close()
         try_catch_create_user(activeUser)
@@ -57,7 +57,7 @@ def process_commands(user, lock):
                 commandRead(command, user)
             except Exception as e:
                 print("🚨 Command input was invalid or an error occurd, use the 'help' command or check the error logs!")
-                file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "w")
+                file = open(os.path.dirname(__file__) + "/errorlog/" + activeUser.username, "a")
                 file.write("Error occured at: " + str(datetime.datetime.now())+ "\n" + traceback.format_exc()+"\n")
                 file.close()
             writeUserData(user)
